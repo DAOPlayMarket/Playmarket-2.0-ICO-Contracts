@@ -90,15 +90,15 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
   
     assert(_multisigWallet != 0);
     assert(_start != 0);
-	assert(_start < _end);
-	assert(_cap > 0);
+    assert(_start < _end);
+    assert(_cap > 0);
 	
-	token = DAOPlayMarketToken(_token);
-	setPrice(_price);
-	multisigWallet = _multisigWallet;
-	startsAt = _start;
-	endsAt = _end;
-	CAP = _cap;
+    token = DAOPlayMarketToken(_token);
+    setPrice(_price);
+    multisigWallet = _multisigWallet;
+    startsAt = _start;
+    endsAt = _end;
+    CAP = _cap;
 
   }
   
@@ -222,10 +222,10 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    * @return true if taking this investment would break our cap rules
    */
   function isBreakingCap(uint tokenAmount, uint tokensSoldTotal) public constant returns (bool limitBroken){
-	if(add(tokenAmount,tokensSoldTotal) <= CAP){
-	  return false;
-	}
-	return true;
+    if(add(tokenAmount,tokensSoldTotal) <= CAP){
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -251,9 +251,9 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    */
   function isCrowdsaleFull() public constant returns (bool) {
     if(tokensSold >= CAP || block.timestamp >= endsAt){
-	  return true;  
-	}
-	return false;
+      return true;  
+    }
+    return false;
   }
   
   /** 
@@ -271,7 +271,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    */
   function setMultisig(address addr) public onlyOwner {
     assert(addr != 0);
-	multisigWallet = addr;
+    multisigWallet = addr;
   }
   
   /** 
