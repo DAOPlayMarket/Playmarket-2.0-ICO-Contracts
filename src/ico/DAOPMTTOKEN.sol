@@ -23,7 +23,7 @@ contract StandardToken is ERC20, SafeMath, Ownable{
    * @param numwords payload size  
    */
   modifier onlyPayloadSize(uint numwords) {
-	assert(msg.data.length == numwords * 32 + 4);
+    assert(msg.data.length == numwords * 32 + 4);
     _;
   }
   
@@ -89,7 +89,7 @@ contract StandardToken is ERC20, SafeMath, Ownable{
     balances[msg.sender] = sub(balances[msg.sender], _value);
     balances[_to] = add(balances[_to], _value);
     
-	Transfer(msg.sender, _to, _value);
+    Transfer(msg.sender, _to, _value);
     return true;
   }
   
@@ -107,7 +107,7 @@ contract StandardToken is ERC20, SafeMath, Ownable{
     balances[_from] = sub(balances[_from], _value);
     balances[_to] = add(balances[_to], _value);
     
-	Transfer(_from, _to, _value);
+    Transfer(_from, _to, _value);
     return true;
   }
   
@@ -123,9 +123,9 @@ contract StandardToken is ERC20, SafeMath, Ownable{
     //  already 0 to mitigate the race condition described here:
     //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     assert((_value != 0) && (approvals[msg.sender][_spender] != 0));
-	approvals[msg.sender][_spender] = _value;
+    approvals[msg.sender][_spender] = _value;
     
-	Approval(msg.sender, _spender, _value);
+    Approval(msg.sender, _spender, _value);
     return true;
   }
   
@@ -137,11 +137,10 @@ contract StandardToken is ERC20, SafeMath, Ownable{
    */ 
   function mint(address _to, uint _value) public onlyCrowdsaleAgent canMint onlyPayloadSize(2) returns (bool success) {
     _totalSupply = add(_totalSupply, _value);
-     balances[_to] = add(balances[_to], _value);
+    balances[_to] = add(balances[_to], _value);
     
-	Transfer(0, _to, _value);
+    Transfer(0, _to, _value);
     return true;
-	
   }
   
   /**
@@ -150,7 +149,7 @@ contract StandardToken is ERC20, SafeMath, Ownable{
    */
   function setCrowdsaleAgent(address _crowdsaleAgent) public onlyOwner {
     assert(!released);
-	crowdsaleAgent = _crowdsaleAgent;
+    crowdsaleAgent = _crowdsaleAgent;
   }
   
   /**
@@ -159,8 +158,6 @@ contract StandardToken is ERC20, SafeMath, Ownable{
   function releaseTokenTransfer() public onlyCrowdsaleAgent {
     released = true;
   }
-  
-
 }
 
 
@@ -192,7 +189,7 @@ contract DAOPlayMarketToken is StandardToken {
     symbol = _symbol;
     decimals = _decimals;
 	
-	_totalSupply = _initialSupply*10**_decimals;
+    _totalSupply = _initialSupply*10**_decimals;
 
     // Create initially all balance on the team multisig
     balances[msg.sender] = _totalSupply;
