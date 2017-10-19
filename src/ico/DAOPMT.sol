@@ -88,10 +88,10 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    */
   function DAOPlayMarketTokenCrowdsale(address _token, Price _price, address _multisigWallet, uint _start, uint _end, uint _cap) public {
   
-    assert(_multisigWallet != 0);
-    assert(_start != 0);
-    assert(_start < _end);
-    assert(_cap > 0);
+    require(_multisigWallet != 0x0);
+    require(_start != 0);
+    require(_start < _end);
+    require(_cap > 0);
 	
     token = DAOPlayMarketToken(_token);
     setPrice(_price);
@@ -270,7 +270,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    * Allow to change the team multisig address in the case of emergency.
    */
   function setMultisig(address addr) public onlyOwner {
-    assert(addr != 0);
+    require(addr != 0x0);
     multisigWallet = addr;
   }
   
