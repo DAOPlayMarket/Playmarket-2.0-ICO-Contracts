@@ -1,8 +1,8 @@
 ## Playmarket-2.0-ICO-Contracts
 Smart contract for ICO Playmarket 2.0
-![](https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/22366531_138042196819992_9134050507965281016_n.jpg?oh=89730bed5951c53479e01532aeea2d31&oe=5A7848B7)
+![](https://github.com/CryptonStudio/Playmarket-2.0-ICO-Contracts/blob/master/.github/images/1.png)
 
-# ISSUE AND DISTRIBUTION OF TOKENS
+## ISSUE AND DISTRIBUTION OF TOKENS
 
 Ticker token DAO PlayMarket 2.0 - PMT.
 The PMT standard is ERC20.
@@ -32,6 +32,7 @@ transferred to the project team that acts as the
 organizer of DAO PlayMarket 2.0 and this PMT 
 will be frozen for 24 months.
 
+![](https://github.com/CryptonStudio/Playmarket-2.0-ICO-Contracts/blob/master/.github/images/2.png)
 
 Important notes:
  1. PMT will be sent automatically back to the wallet from which the funds have been sent.
