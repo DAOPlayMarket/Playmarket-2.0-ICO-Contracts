@@ -38,3 +38,5 @@ Important notes:
  1. PMT will be sent automatically back to the wallet from which the funds have been sent.
  2. PMT transactions will be limited till ICO end to prevent trading before the ICO ends.
  3. During the ICO ETH is accepted only from wallets compliant with ERC-20 token standard. (recommended to use: MyEtherWallet). Do not send ETH directly from cryptocurrency exchanges (Coinbase, Kraken, Poloniex etc.)!
+
+Made by <a target="_blank" href="https://crypton.studio">Crypton.Studio</a>
