@@ -95,7 +95,7 @@ contract Price is Ownable, SafeMath {
   function setStage(uint number) private onlyCrowdsaleAgent {
     uint time = block.timestamp;
     uint j = 0;
-    stages[number-1].end = block.timestamp;
+    stages[number-1].end = time;
     for (uint i = number; i < stages.length; i++) {
       stages[i].start = time+periodStage*j;
       stages[i].end = time+periodStage*(j+1);
