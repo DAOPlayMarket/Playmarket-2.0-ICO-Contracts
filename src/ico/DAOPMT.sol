@@ -146,7 +146,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
 
     assignTokens(receiver, tokenAmount);
 
-    // Pocket the money
+    // send ether to the fund collection wallet
     multisigWallet.transfer(weiAmount);
 
     // Tell us invest was success
