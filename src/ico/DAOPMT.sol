@@ -316,7 +316,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    * @dev Finalize a succcesful crowdsale.
    */
   function finalize() public inState(State.Success) onlyOwner stopInEmergency {
-    require(block.timestamp >= (endsA+periodStage));
+    require(block.timestamp >= (endsAt+periodStage));
     require(!finalized);
 	
     finalizeCrowdsale();
