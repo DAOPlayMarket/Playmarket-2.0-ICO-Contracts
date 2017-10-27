@@ -302,8 +302,8 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
     uint amount;
     for(uint i=0; i<stages.length; i++) {
       if(tokenAmountOfPeriod[stages[i].period][msg.sender] != 0){
-      amount = add(amount,div(mul(sub(stages[i].cap,stages[i].tokenSold),tokenAmountOfPeriod[stages[i].period][msg.sender]),stages[i].tokenSold));
-      tokenAmountOfPeriod[stages[i].period][msg.sender] = 0;
+        amount = add(amount,div(mul(sub(stages[i].cap,stages[i].tokenSold),tokenAmountOfPeriod[stages[i].period][msg.sender]),stages[i].tokenSold));
+        tokenAmountOfPeriod[stages[i].period][msg.sender] = 0;
       }
     }
     assignTokens(msg.sender, amount);
