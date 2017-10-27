@@ -48,9 +48,6 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
   
   /** How many tokens he charged for each investor's address in a particular period */
   mapping (uint => mapping (address => uint256)) public tokenAmountOfPeriod;
-  mapping (uint => mapping (uint => address)) public numberOfReceiver;
-  mapping (address => uint256) public balancesOfDistribution;
-  uint[] public counter;
   
   struct Stage {
     // UNIX timestamp when the stage begins
@@ -94,6 +91,9 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
 
   // Crowdsale end time has been changed
   event EndsAtChanged(uint _endsAt);
+  
+  // New distributions were made
+  event DistributedTokens(address investor, uint tokenAmount);
   
   /** 
    * @dev Modified allowing execution only if the crowdsale is currently running
@@ -139,7 +139,6 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
     uint j = 0;
     for(uint i=0; i<_price.length; i=i+3) {
       stages.push(Stage(startsAt+j*periodStage, startsAt+(j+1)*periodStage, j, _price[i], _price[i+1], _price[i+2], capPeriod, 0));
-      counter.push(0);
       j++;
     }
     endsAt = stages[stages.length-1].end;
@@ -177,11 +176,6 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
 
 	// Check that we did not bust the cap in the period
     assert(stages[stage].cap >= add(tokenAmount, stages[stage].tokenSold));
-	
-    if(tokenAmountOfPeriod[stage][receiver] == 0){
-      numberOfReceiver[stage][counter[stage]] = receiver;
-      counter[stage]++;
-    }
 	
     tokenAmountOfPeriod[stage][receiver]=add(tokenAmountOfPeriod[stage][receiver],tokenAmount);
 	
@@ -244,11 +238,6 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
 	// Check that we did not bust the cap in the period
     assert(stages[stage].cap >= add(tokenAmount, stages[stage].tokenSold));
 	
-    if(tokenAmountOfPeriod[stage][receiver] == 0){
-      numberOfReceiver[stage][counter[stage]] = receiver;
-      counter[stage]++;
-    }
-	
     tokenAmountOfPeriod[stage][receiver]=add(tokenAmountOfPeriod[stage][receiver],tokenAmount);
 	
     stages[stage].tokenSold = add(stages[stage].tokenSold,tokenAmount);
@@ -307,40 +296,27 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
   /**
    * @dev Distribution of remaining tokens.
    */
-  function distributionOfTokens() private {
-    uint i;
-    uint j;
-    address receiver;
-    uint amount = 0;
-    uint amountD = 0;
-    for(i=0; i < stages.length; i++) {
-      if(stages[i].cap > stages[i].tokenSold){
-        for(j=0; j < counter[stages[i].period]; j++) {
-          receiver = numberOfReceiver[stages[i].period][j];
-          amount = tokenAmountOfPeriod[stages[i].period][receiver];
-          amountD = div(mul(sub(stages[i].cap,stages[i].tokenSold),amount),stages[i].tokenSold);
-          balancesOfDistribution [receiver] = add(balancesOfDistribution [receiver],amountD);
-          assignTokens(receiver, amountD);
-        }
+  function distributionOfTokens() public {
+    require(block.timestamp >= endsAt);
+    require(!finalized);
+    uint amount;
+    for(uint i=0; i<stages.length; i++) {
+      if(tokenAmountOfPeriod[stages[i].period][msg.sender] != 0){
+      amount = add(amount,div(mul(sub(stages[i].cap,stages[i].tokenSold),tokenAmountOfPeriod[stages[i].period][msg.sender]),stages[i].tokenSold));
+      tokenAmountOfPeriod[stages[i].period][msg.sender] = 0;
       }
     }
+    assignTokens(msg.sender, amount);
+	
+    // Tell us distributed was success
+    DistributedTokens(msg.sender, amount);
   }
   
   /**
    * @dev Finalize a succcesful crowdsale.
    */
   function finalize() public inState(State.Success) onlyOwner stopInEmergency {
-    require(!finalized);
-	
-    distributionOfTokens();
-    finalizeCrowdsale();
-    finalized = true;
-  }
-  
-  /**
-   * @dev Only finalize a succcesful crowdsale.
-   */
-  function finalizeOnly() public inState(State.Success) onlyOwner stopInEmergency {
+    require(block.timestamp >= (endsA+periodStage));
     require(!finalized);
 	
     finalizeCrowdsale();
