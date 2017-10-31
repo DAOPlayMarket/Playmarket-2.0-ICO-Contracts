@@ -212,5 +212,4 @@ contract DAOPlayMarketToken is StandardToken {
 
     UpdatedTokenInformation(name, symbol);
   }
-
 }
