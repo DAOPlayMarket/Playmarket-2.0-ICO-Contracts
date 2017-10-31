@@ -124,7 +124,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
   function DAOPlayMarketTokenCrowdsale(address _token, address _multisigWallet, uint _start, uint _cap, uint[15] _price, uint _periodStage, uint _capPeriod) public {
   
     require(_multisigWallet != 0x0);
-    require(_start != 0);
+    require(_start >= block.timestamp);
     require(_cap > 0);
     require(_periodStage > 0);
     require(_capPeriod > 0);
@@ -162,6 +162,8 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    *
    */
   function investInternal(address receiver) private stopInEmergency {
+    require(msg.value > 0);
+	
     assert(getState() == State.Funding);
 
     // Determine in what period we hit
@@ -223,6 +225,8 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
    *
    */
   function investOtherCrypto(address receiver, uint _weiAmount) public onlyCryptoAgent stopInEmergency {
+    require(_weiAmount > 0);
+	
     assert(getState() == State.Funding);
 
     // Determine in what period we hit
@@ -399,7 +403,7 @@ contract DAOPlayMarketTokenCrowdsale is Haltable, SafeMath, Killable {
   /** 
    * @dev Updates the ICO steps if the cap is reached.
    */
-  function updateStage(uint number) private onlyOwner {
+  function updateStage(uint number) private {
     require(number>=0);
     uint time = block.timestamp;
     uint j = 0;
