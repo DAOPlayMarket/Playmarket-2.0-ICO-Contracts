@@ -182,17 +182,19 @@ contract DAOPlayMarketToken is StandardToken {
    * @param _symbol Token symbol - should be all caps
    * @param _initialSupply How many tokens we start with
    * @param _decimals Number of decimal places
+   * @param _addr Address for team's tokens
    */
    
-  function DAOPlayMarketToken(string _name, string _symbol, uint _initialSupply, uint _decimals) public {
+  function DAOPlayMarketToken(string _name, string _symbol, uint _initialSupply, uint _decimals, address _addr) public {
+    require(_addr != 0x0);
     name = _name;
     symbol = _symbol;
     decimals = _decimals;
 	
     _totalSupply = _initialSupply*10**_decimals;
 
-    // Create initially all balance on the team multisig
-    balances[msg.sender] = _totalSupply;
+    // Creating initial tokens
+    balances[_addr] = _totalSupply;
   }   
   
    /**
