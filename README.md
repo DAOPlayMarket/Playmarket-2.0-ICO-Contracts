@@ -39,4 +39,10 @@ Important notes:
  2. PMT transactions will be limited till ICO end to prevent trading before the ICO ends.
  3. During the ICO ETH is accepted only from wallets compliant with ERC-20 token standard. (recommended to use: MyEtherWallet). Do not send ETH directly from cryptocurrency exchanges (Coinbase, Kraken, Poloniex etc.)!
 
+#### Addresses of contracts:
+```
+* DAOPMTTOKEN: 0xC1322D8aE3B0e2E437e0AE36388D0CFD2C02f1c9
+
+```
+
 Made by <a target="_blank" href="https://crypton.studio">Crypton.Studio</a>
